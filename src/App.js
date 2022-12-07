@@ -3,6 +3,7 @@ import Terminal from './Terminal';
 import {
   createBrowserRouter,
   RouterProvider,
+  useNavigate,
 } from "react-router-dom";
 import Home from './Home';
 

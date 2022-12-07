@@ -2,6 +2,7 @@ import Terminal from "./Terminal";
 import TypingText from "./TypingText";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const Option = styled.div`
     &:hover {
@@ -18,6 +19,13 @@ const Option = styled.div`
 
 function Home({entries}) {
     const navigate = useNavigate();
+
+    useEffect(()=>{
+        const goto = new URLSearchParams(window.location.href.split("?")[1]).get("goto");
+        if (goto) {
+            navigate("/" + goto);
+        }
+    }, [])
 
     return (
         <div>

@@ -21,7 +21,6 @@ const Terminal = ({path, children=""}) => {
   //handles loading the buffer
   useEffect(()=>{
     if (path) {
-        console.log(path);
         fetch(path)
         .then(response => response.text())
         .then(data => {

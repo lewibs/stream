@@ -7,6 +7,7 @@ import {
 import Home from './Home';
 
 const baseURL = "https://raw.githubusercontent.com/lewibs/stream/main/public/stream/";
+const Error = <Terminal>{"Error: 404\nhmmmmmmm... I haven't been here yet.\nTry entering 'help' if you're lost\n"}</Terminal>
 
 const App = () => {
   const [router, setRouter] = useState();
@@ -18,21 +19,20 @@ const App = () => {
         const router = createBrowserRouter([
           {
             path: "/",
-            element: <Home />,
-          },
-          {
-            path: "/0",
-            element: <Home />,
+            errorElement: Error,
+            element: <Home entries={entries}/>,
           },
           ...entries.map((title, i)=>{
             return {
-              path: "/" + (i + 1),
+              path: "/" + i,
+              errorElement: Error,
               element: <Terminal path={"https://raw.githubusercontent.com/lewibs/stream/main/public/stream/" + title} />
             }
           }),
           {
             path: "*",
-            element: <Terminal>{"hmmmmmmm... I haven't been here yet.\nTry entering 'help' if you're lost\n"}</Terminal>
+            errorElement: Error,
+            element: Error,
           }
         ]);
 

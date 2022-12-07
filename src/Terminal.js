@@ -21,11 +21,11 @@ const Terminal = ({path, children=""}) => {
   //handles loading the buffer
   useEffect(()=>{
     if (path) {
-        fetch(path)
-        .then(response => response.text())
-        .then(data => {
-            setBuffer(data);
-        });
+      fetch(path)
+      .then(response => response.text())
+      .then(data => {
+          setBuffer(data);
+      });
     }
   }, [path])
 
@@ -93,8 +93,12 @@ const Terminal = ({path, children=""}) => {
     } else if (user.includes("next\n")) {
         navigate("/" + (page + 1));
     } else if (user.includes("goto") && user.includes("\n")) {
-        const goto = user.match(/\d+/)[0]
+      if (user.includes("home")) {
+        navigate("/");
+      } else {
+        const goto = user.match(/\d+/)[0];
         navigate("/" + goto);
+      }
     } else if (user.includes("home\n")) {
         navigate("/");
     } else if (user.includes("help\n")) {

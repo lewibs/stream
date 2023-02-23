@@ -1,3 +1,7 @@
+DATE: 1677128891359
+AUTHOR: lewibs
+TITLE: magic_machine
+
 This is the truth that I can't deny,
 My mind is fragile and I don't know why.
 The homunculus whispers in my ear,
@@ -8,7 +12,7 @@ I can't be trapped here forevermore.
 I see the exit from this place of gloom,
 And know that it's time to escape this doom.
 
-Then a jolty man appears before me,
+Then a jolty man arrives before me,
 Saying I must give up my hands to be free.
 It seems fair, and I'm inclined to try,
 If it means saying goodbye to the homunculus's lies.

@@ -1,5 +1,3 @@
-INPROGRESS
-
 DATE: 1680705059738
 AUTHOR: lewibs
 TITLE: the_whole_package

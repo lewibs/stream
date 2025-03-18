@@ -19,7 +19,7 @@ const App = () => {
       .then(entries => {
         const router = createBrowserRouter([
           {
-            path: "/",
+            path: "/stream",
             errorElement: Error,
             element: <Home entries={entries}/>,
           },

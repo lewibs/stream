@@ -27,7 +27,7 @@ const App = () => {
             return {
               path: "/" + i,
               errorElement: Error,
-              element: <Terminal path={"https://raw.githubusercontent.com/lewibs/stream/main/public/stream/" + title} />
+              element: <Terminal path={baseURL + title} />
             }
           }),
           {

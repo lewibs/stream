@@ -25,7 +25,7 @@ const App = () => {
           },
           ...entries.map((title, i)=>{
             return {
-              path: "/" + i,
+              path: "/stream/" + i,
               errorElement: Error,
               element: <Terminal path={baseURL + title} />
             }

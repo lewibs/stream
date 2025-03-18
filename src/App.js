@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import Home from './Home';
 
-const baseURL = "https://lewibs.github.io/";
+const baseURL = "https://lewibs.github.io/stream";
 const Error = <Terminal>{"Error: 404\nhmmmmmmm... I haven't been here yet.\nTry entering 'help' if you're lost\n"}</Terminal>
 
 const App = () => {

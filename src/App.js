@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import Home from './Home';
 
-const baseURL = "https://lewibs.github.io/stream";
+const baseURL = "https://raw.githubusercontent.com/lewibs/stream/main/public/stream/"; //keep this pointing to the raw!
 const Error = <Terminal>{"Error: 404\nhmmmmmmm... I haven't been here yet.\nTry entering 'help' if you're lost\n"}</Terminal>
 
 const App = () => {
@@ -19,13 +19,13 @@ const App = () => {
       .then(entries => {
         const router = createBrowserRouter([
           {
-            path: "/stream",
+            path: "/",
             errorElement: Error,
             element: <Home entries={entries}/>,
           },
           ...entries.map((title, i)=>{
             return {
-              path: "/stream/" + i,
+              path: "/" + i,
               errorElement: Error,
               element: <Terminal path={baseURL + title} />
             }

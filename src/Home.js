@@ -33,7 +33,7 @@ function Home({entries}) {
                 <Option 
                     key={entry.key}
                     onClick={()=>{
-                        navigate("/" + (entry.key));
+                        navigate("/" + entry.key);
                     }}
                 >
                     <TypingText wait={500 * (i)}>{i + ": " + entry.title}</TypingText>

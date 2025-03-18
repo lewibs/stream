@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import TypingText from './TypingText';
 import htmlize from "./functions/htmlize";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const Terminal = ({path, children=""}) => {
   //the terminal history
@@ -17,6 +17,7 @@ const Terminal = ({path, children=""}) => {
   //this is used to flash the input box
   const [showInput, setShowInput] = useState(true);
   const navigate = useNavigate();
+  const { id:pageId } = useParams();
 
   //handles loading the buffer
   useEffect(()=>{
@@ -87,7 +88,7 @@ const Terminal = ({path, children=""}) => {
 
   //this handles user commands
   useEffect(()=>{
-    const page = +window.location.pathname.replace("/","");
+    const page = +pageId
     if (user.includes("back\n")) {
         navigate("/" + (page - 1));
     } else if (user.includes("next\n")) {
@@ -96,7 +97,7 @@ const Terminal = ({path, children=""}) => {
       if (user.includes("home")) {
         navigate("/");
       } else {
-        const goto = user.match(/\d+/)[0];
+        const goto = user.slice(5);
         navigate("/" + goto);
       }
     } else if (user.includes("home\n")) {

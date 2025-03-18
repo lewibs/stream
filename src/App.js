@@ -20,21 +20,23 @@ const App = () => {
       .then(entries => {
         const router = createHashRouter([
           {
-            path: "/",
-            errorElement: Error,
-            element: <Home entries={entries}/>,
-          },
-          ...entries.map((entry, i)=>{
-            return {
-              path: "/" + entry.key,
+              path: "/",
               errorElement: Error,
-              element: <Terminal path={baseURL + entry.title} />
-            }
-          }),
+              element: <Home entries={entries} />,
+          },
           {
-            path: "*",
-            errorElement: Error,
-            element: Error,
+              path: "/:id",
+              errorElement: Error,
+              element: <Terminal />,
+              loader: ({ params }) => {
+                  const entry = entries.find(e => e.key == params.id);
+                  return entry ? { path: baseURL + entry.title } : null;
+              }
+          },
+          {
+              path: "*",
+              errorElement: Error,
+              element: Error,
           }
         ]);
 

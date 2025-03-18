@@ -3,134 +3,118 @@ import TypingText from './TypingText';
 import htmlize from "./functions/htmlize";
 import { useNavigate } from 'react-router-dom';
 
-const Terminal = ({path, children=""}) => {
-  //the terminal history
+const Terminal = ({ path, children = "" }) => {
   const [history, setHistory] = useState([]);
-  //the users input
   const [user, setUser] = useState("");
-  //the string that is being typed
   const [buffer, setBuffer] = useState(children);
-  //the jsx element that is typing
   const [typing, setTyping] = useState(undefined);
-  //this is used to keep track of if the user is typing
   const [isTyping, setIsTyping] = useState(false);
-  //this is used to flash the input box
   const [showInput, setShowInput] = useState(true);
   const navigate = useNavigate();
+  const terminalRef = useRef(null);
 
-  //handles loading the buffer
-  useEffect(()=>{
+  useEffect(() => {
     if (path) {
       fetch(path)
-      .then(response => response.text())
-      .then(data => {
+        .then(response => response.text())
+        .then(data => {
           setBuffer(data);
-      });
+        });
     }
-  }, [path])
+  }, [path]);
 
-  //sets the event listenters for user typing
-  let ranCheckTyping = false
   useEffect(() => {
-    if (ranCheckTyping === false) {
-      let interval;
+    let interval;
 
-      function isTypingOn() {
-        setIsTyping(true);
-        clearTimeout(interval);
-      }
-
-      function isTypingOff() {
-        interval = setTimeout(()=>{
-          setIsTyping(false);
-        }, 100);
-      }
-
-      window.addEventListener('keydown', isTypingOn);
-      window.addEventListener('keyup', isTypingOff);
+    function isTypingOn() {
+      setIsTyping(true);
+      clearTimeout(interval);
     }
-    ranCheckTyping = true;
+
+    function isTypingOff() {
+      interval = setTimeout(() => {
+        setIsTyping(false);
+      }, 100);
+    }
+
+    window.addEventListener('keydown', isTypingOn);
+    window.addEventListener('keyup', isTypingOff);
+
+    return () => {
+      window.removeEventListener('keydown', isTypingOn);
+      window.removeEventListener('keyup', isTypingOff);
+    };
   }, []);
 
-  //checks if the user is typing
-  useEffect(()=>{
+  useEffect(() => {
     if (isTyping) {
       setShowInput(true);
     } else {
       const interval = setInterval(() => {
         setShowInput(prevState => !prevState);
       }, 500);
-      // Clean up the interval when the component unmounts
       return () => clearInterval(interval);
     }
-  }, [isTyping])
+  }, [isTyping]);
 
-  //stringify actions
-  let ranListen = false;
-  useEffect(()=>{
-    if (ranListen === false) {
-      function actionToString(e) {
-        if (e.key === "Backspace") {
-          setUser(p=>p.substring(0, p.length - 1));
-        } else if (e.key === "Enter") {
-          setUser(p=>p + '\n');
-        } else if (e.key.length === 1 ) {
-          setUser(p=>p+e.key);
-        }
+  useEffect(() => {
+    function actionToString(e) {
+      if (e.key === "Backspace") {
+        setUser(p => p.substring(0, p.length - 1));
+      } else if (e.key === "Enter") {
+        setUser(p => p + '\n');
+      } else if (e.key.length === 1) {
+        setUser(p => p + e.key);
       }
-
-      window.addEventListener('keydown', actionToString);
-      return ()=>{window.removeEventListener("keydown", actionToString)}
     }
-    ranListen = true;
+
+    window.addEventListener('keydown', actionToString);
+    return () => window.removeEventListener("keydown", actionToString);
   }, []);
 
-  //this handles user commands
-  useEffect(()=>{
-    const page = +window.location.pathname.replace("/","");
+  useEffect(() => {
+    const page = +window.location.pathname.replace("/", "");
     if (user.includes("back\n")) {
-        navigate("/" + (page - 1));
+      navigate("/" + (page - 1));
     } else if (user.includes("next\n")) {
-        navigate("/" + (page + 1));
+      navigate("/" + (page + 1));
     } else if (user.includes("goto") && user.includes("\n")) {
       if (user.includes("home")) {
         navigate("/");
       } else {
-        const goto = user.match(/\d+/)[0];
-        navigate("/" + goto);
+        const goto = user.match(/\d+/)?.[0];
+        if (goto) navigate("/" + goto);
       }
     } else if (user.includes("home\n")) {
-        navigate("/");
+      navigate("/");
     } else if (user.includes("help\n")) {
-        setBuffer(
-            "back - used to go to the previous entry if there is one\n"
-            + "next - used to go to the next entry if there is one\n"
-            + "goto <stream number> - used to go to a specific entry\n"
-            + "home - used to get to the home menu\n"
-        );
+      setBuffer(
+        "back - go to the previous entry\n" +
+        "next - go to the next entry\n" +
+        "goto <stream number> - go to a specific entry\n" +
+        "home - go to the home menu\n"
+      );
     } else if (user.includes("\n")) {
-        setBuffer("Not a valid command. Try using 'help' for info\n");
+      setBuffer("Not a valid command. Try using 'help' for info\n");
     }
 
-    if (user[user.length - 1] === '\n') {
-      setHistory(p=>[...p, htmlize(user)]);
+    if (user.endsWith('\n')) {
+      setHistory(p => [...p, htmlize(user)]);
       setUser("");
     }
-  }, [user]);
+  }, [user, navigate]);
 
-  //this handles the buffer stream
-  useEffect(()=>{
-    if (buffer[buffer.length - 1] === '\n') {
-        setHistory(p=>[...p, htmlize(user)]);
-        setBuffer("");
+  useEffect(() => {
+    if (buffer.endsWith('\n')) {
+      setHistory(p => [...p, htmlize(buffer)]);
+      setBuffer("");
     }
   }, [buffer]);
 
-  //buffer update
-  useEffect(()=>{
+  useEffect(() => {
     setTyping(
-      <TypingText onDone={()=>{
-        setHistory(p=>[...p, htmlize(buffer)]);
+      <TypingText onDone={() => {
+        setHistory(p => [...p, htmlize(buffer)]);
         setTyping(undefined);
       }}>
         {buffer}
@@ -139,19 +123,28 @@ const Terminal = ({path, children=""}) => {
   }, [buffer]);
 
   return (
-    <>
+    <div ref={terminalRef} style={{
+      whiteSpace: "pre-wrap",
+      wordBreak: "break-word",
+      fontFamily: "monospace",
+      background: "black",
+      color: "#4AF626",
+      padding: "10px",
+      minHeight: "100vh"
+    }}>
       {history}
       {typing}
-      <div style={{display:"flex", flexDirection:"row", alignItems:"end"}}>
+      <div style={{ display: "flex", flexDirection: "row", alignItems: "end", flexWrap: "wrap" }}>
         {htmlize(user)}
         {showInput && <div style={{
           height: "1rem",
           width: "10px",
           background: "#4AF626",
-        }}/>}
+          marginLeft: "2px"
+        }} />}
       </div>
-    </>
-  )
+    </div>
+  );
 };
 
 export default Terminal;

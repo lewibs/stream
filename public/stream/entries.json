@@ -2,31 +2,31 @@
     {
         "title": "garrett_patrick_theodore.txt",
         "key": 0,
-        "hidden": true
+        "hidden": false
     },
     {
         "title": "abharen.txt",
-        "key": 1,
+        "key": 0.1,
         "hidden": true
     },
     {
         "title": "depersonalization.txt",
-        "key": 2,
+        "key": 0.2,
         "hidden": true
     },
     {
         "title": "echoes_of_failure_a_prison_of_the_mind.txt",
-        "key": 3,
+        "key": 0.3,
         "hidden": true
     },
     {
         "title": "magic_machine.txt",
-        "key": 4,
+        "key": 0.4,
         "hidden": true
     },
     {
         "title": "the_whole_package.txt",
-        "key": 5,
+        "key": 0.5,
         "hidden": true
     }
 ]

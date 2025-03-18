@@ -24,7 +24,7 @@ const App = () => {
             errorElement: Error,
             element: <Home entries={entries}/>,
           },
-          ...entries.filter(entry=>entry.hidden).map((entry, i)=>{
+          ...entries.map((entry, i)=>{
             return {
               path: "/" + entry.key,
               errorElement: Error,

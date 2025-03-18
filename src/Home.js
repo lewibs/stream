@@ -29,14 +29,14 @@ function Home({entries}) {
 
     return (
         <div>
-            {entries.map((title, i)=>
+            {entries.filter(entry=>!entry.hidden).map((entry, i)=>
                 <Option 
-                    key={i}
+                    key={entry.key}
                     onClick={()=>{
-                        navigate("/" + (i));
+                        navigate("/" + (entry.key));
                     }}
                 >
-                    <TypingText wait={500 * (i)}>{i + ": " + title}</TypingText>
+                    <TypingText wait={500 * (i)}>{i + ": " + entry.title}</TypingText>
                 </Option>
             )}
             <Terminal></Terminal>

@@ -24,11 +24,11 @@ const App = () => {
             errorElement: Error,
             element: <Home entries={entries}/>,
           },
-          ...entries.map((title, i)=>{
+          ...entries.filter(entry=>entry.hidden).map((entry, i)=>{
             return {
-              path: "/" + i,
+              path: "/" + entry.key,
               errorElement: Error,
-              element: <Terminal path={baseURL + title} />
+              element: <Terminal path={baseURL + entry.title} />
             }
           }),
           {

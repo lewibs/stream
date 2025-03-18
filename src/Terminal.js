@@ -89,15 +89,15 @@ const Terminal = ({path, children=""}) => {
   useEffect(()=>{
     const page = +window.location.pathname.replace("/","");
     if (user.includes("back\n")) {
-        navigate("/stream/" + (page - 1));
+        navigate("/" + (page - 1));
     } else if (user.includes("next\n")) {
-        navigate("/stream/" + (page + 1));
+        navigate("/" + (page + 1));
     } else if (user.includes("goto") && user.includes("\n")) {
       if (user.includes("home")) {
-        navigate("/stream");
+        navigate("/");
       } else {
         const goto = user.match(/\d+/)[0];
-        navigate("/stream/" + goto);
+        navigate("/" + goto);
       }
     } else if (user.includes("home\n")) {
         navigate("/");

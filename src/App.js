@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Terminal from './Terminal';
 import {
   createBrowserRouter,
+  createHashRouter,
   RouterProvider,
   useNavigate,
 } from "react-router-dom";
@@ -17,15 +18,15 @@ const App = () => {
     fetch(baseURL + "entries.json")
       .then(response => response.json())
       .then(entries => {
-        const router = createBrowserRouter([
+        const router = createHashRouter([
           {
-            path: "/stream",
+            path: "/",
             errorElement: Error,
             element: <Home entries={entries}/>,
           },
           ...entries.map((title, i)=>{
             return {
-              path: "/stream" + i,
+              path: "/" + i,
               errorElement: Error,
               element: <Terminal path={baseURL + title} />
             }

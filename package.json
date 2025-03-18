@@ -1,6 +1,6 @@
 {
   "name": "stream",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "homepage": "https://lewibs.github.io/stream",
   "dependencies": {

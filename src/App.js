@@ -19,13 +19,13 @@ const App = () => {
       .then(entries => {
         const router = createBrowserRouter([
           {
-            path: "/",
+            path: "/stream",
             errorElement: Error,
             element: <Home entries={entries}/>,
           },
           ...entries.map((title, i)=>{
             return {
-              path: "/" + i,
+              path: "/stream" + i,
               errorElement: Error,
               element: <Terminal path={baseURL + title} />
             }

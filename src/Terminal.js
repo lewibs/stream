@@ -25,6 +25,9 @@ const Terminal = ({baseURL, entries, children=""}) => {
       return
     }
 
+    setHistory([])
+    setTyping(undefined)
+
     const entry = entries?.find(e => e.key == pageId);
     const path = entry ? baseURL + entry.title : null;
 
@@ -35,7 +38,7 @@ const Terminal = ({baseURL, entries, children=""}) => {
           setBuffer(data);
       });
     }
-  }, [])
+  }, [pageId])
 
   //sets the event listenters for user typing
   let ranCheckTyping = false
@@ -91,28 +94,20 @@ const Terminal = ({baseURL, entries, children=""}) => {
       return ()=>{window.removeEventListener("keydown", actionToString)}
     }
     ranListen = true;
-  }, [pageId]);
+  }, []);
 
   //this handles user commands
   useEffect(()=>{
     const page = +pageId
     if (user.includes("back\n")) {
-        setHistory([])
-        setTyping(undefined)
         navigate("/" + (page - 1));
     } else if (user.includes("next\n")) {
-        setHistory([])
-        setTyping(undefined)
         navigate("/" + (page + 1));
     } else if (user.includes("goto") && user.includes("\n")) {
       if (user.includes("home")) {
-        setHistory([])
-        setTyping(undefined)
         navigate("/");
       } else {
         const goto = user.slice(5);
-        setHistory([])
-        setTyping(undefined)
         navigate("/" + goto);
       }
     } else if (user.includes("home\n")) {
@@ -132,7 +127,7 @@ const Terminal = ({baseURL, entries, children=""}) => {
       setHistory(p=>[...p, htmlize(user)]);
       setUser("");
     }
-  }, [user, pageId]);
+  }, [user]);
 
   //this handles the buffer stream
   useEffect(()=>{
@@ -140,7 +135,7 @@ const Terminal = ({baseURL, entries, children=""}) => {
         setHistory(p=>[...p, htmlize(user)]);
         setBuffer("");
     }
-  }, [buffer, pageId]);
+  }, [buffer]);
 
   //buffer update
   useEffect(()=>{
@@ -152,7 +147,7 @@ const Terminal = ({baseURL, entries, children=""}) => {
         {buffer}
       </TypingText>
     );
-  }, [buffer, pageId]);
+  }, [buffer]);
 
   return (
     <>

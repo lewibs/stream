@@ -20,7 +20,7 @@ function TypingText({ children, wait=0, onDone=()=>{} }) {
     ranWrite = true;
   }, []);
 
-  return htmlize(text);
+  return <>{htmlize(text)}</>
 }
 
 export default TypingText

@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import TypingText from './TypingText';
 import htmlize from "./functions/htmlize";
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLoaderData } from 'react-router-dom';
 
-const Terminal = ({path, children=""}) => {
+const Terminal = ({baseURL, entries, children=""}) => {
   //the terminal history
   const [history, setHistory] = useState([]);
   //the users input
@@ -21,6 +21,13 @@ const Terminal = ({path, children=""}) => {
 
   //handles loading the buffer
   useEffect(()=>{
+    if (!entry || !baseURL) {
+      return
+    }
+
+    const entry = entries?.find(e => e.key == pageId);
+    const path = entry ? baseURL + entry.title : null;
+
     if (path) {
       fetch(path)
       .then(response => response.text())
@@ -28,7 +35,7 @@ const Terminal = ({path, children=""}) => {
           setBuffer(data);
       });
     }
-  }, [path])
+  }, [])
 
   //sets the event listenters for user typing
   let ranCheckTyping = false

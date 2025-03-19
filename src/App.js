@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Terminal from './Terminal';
 import {
-  createBrowserRouter,
   createHashRouter,
   RouterProvider,
-  useNavigate,
 } from "react-router-dom";
 import Home from './Home';
 
@@ -27,7 +25,7 @@ const App = () => {
           {
               path: "/:id",
               errorElement: Error,
-              element: <Terminal />,
+              element: <Terminal baseURL={baseURL} entries={entries} />,
               loader: ({ params }) => {
                   const entry = entries.find(e => e.key == params.id);
                   return entry ? { path: baseURL + entry.title } : null;
